@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#000</color>
+    <color name="colorPrimaryDark">#000</color>
+    <color name="colorAccent">#3399ff</color>
+    <color name="white">#ffffff</color>
+    <color name="transparent_color">#B3000000</color>
+    <color name="black">#000000</color>
+    <color name="background_color">#fff</color>
+    <color name="white_greyish">#EEEEEE</color>
+    <color name="button_selectorcolor">#9E9E9E</color>
+
+    <color name="placeholder_bg">#dddddd</color>
+</resources>
