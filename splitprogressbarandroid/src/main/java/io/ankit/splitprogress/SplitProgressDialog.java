@@ -1,7 +1,11 @@
 package io.ankit.splitprogress;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -9,14 +13,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class SplitProgressDialog extends Dialog {
-    ProgressBar progress1;
-    ProgressBar progress2;
-    ProgressBar progress3;
-    ProgressBar progress4;
-    TextView messageText, percentageText;
-    int i;
+    LinearLayout parentL;
+    private ProgressBar progress1;
+    private ProgressBar progress2;
+    private ProgressBar progress3;
+    private ProgressBar progress4;
+    private TextView messageText, percentageText;
+    private SplitProgressDialog progressDialog;
 
-    public SplitProgressDialog(Context context) {
+    public SplitProgressDialog(final Context context) {
         super(context);
         View view = LayoutInflater.from(context).inflate(R.layout.layout_progress_dialog, null, false);
         messageText = view.findViewById(R.id.messageText);
@@ -25,13 +30,49 @@ public class SplitProgressDialog extends Dialog {
         progress2 = view.findViewById(R.id.progress2);
         progress3 = view.findViewById(R.id.progress3);
         progress4 = view.findViewById(R.id.progress4);
-        LinearLayout parentL = view.findViewById(R.id.parent_layout);
+        parentL = view.findViewById(R.id.parent_layout);
+        parentL.getRootView().setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
 
         this.setContentView(view);
-        this.setTitle("Loading.....");
-        this.setCancelable(false);
+        this.setCancelable(true);
+        this.setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                progress1.setProgress(0);
+                progress2.setProgress(0);
+                progress3.setProgress(0);
+                progress4.setProgress(0);
+                percentageText.setText("0%");
 
+            }
+        });
+        this.setOnCancelListener(new OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                progress1.setProgress(0);
+                progress2.setProgress(0);
+                progress3.setProgress(0);
+                progress4.setProgress(0);
+                percentageText.setText("0%");
+            }
+        });
 
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        final int height = displayMetrics.heightPixels;
+        final int width = displayMetrics.widthPixels;
+        this.getWindow().setBackgroundDrawableResource(android.R.color.black);
+
+        this.setOnShowListener(new OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+
+                progressDialog = new SplitProgressDialog(context);
+                progressDialog.getWindow().setLayout(width, 500);
+
+            }
+        });
+        //this.getWindow().setLayout(width - 60, height / 4);
     }
 
     @Override
@@ -46,7 +87,35 @@ public class SplitProgressDialog extends Dialog {
 
     @Override
     public void dismiss() {
-        super.dismiss();
+        if (this.isShowing()) {
+            super.dismiss();
+        } else {
+        }
+    }
+
+    @Override
+    public void setOnShowListener(OnShowListener listener) {
+        super.setOnShowListener(listener);
+    }
+
+    @Override
+    public void setOnDismissListener(OnDismissListener listener) {
+        super.setOnDismissListener(listener);
+    }
+
+    public void resizeDialog(int width, int height) {
+        this.getWindow().setLayout(width, height);
+
+    }
+
+    public void setBackgroundColor(int resId) {
+        this.getWindow().setBackgroundDrawableResource(resId);
+
+    }
+
+    public void setBackgroundColor(Drawable drawable) {
+        this.getWindow().setBackgroundDrawable(drawable);
+
     }
 
     @Override
@@ -76,8 +145,20 @@ public class SplitProgressDialog extends Dialog {
 
     }
 
+    public void setProgressDrawable(Drawable progressDrawable) {
+        progress1.setProgressDrawable(progressDrawable);
+        progress2.setProgressDrawable(progress1.getProgressDrawable());
+        progress3.setProgressDrawable(progress2.getProgressDrawable());
+        progress4.setProgressDrawable(progress3.getProgressDrawable());
+
+    }
+
     @Override
     public void setTitle(int titleId) {
         messageText.setText(titleId);
+    }
+
+    public void setTitle(String title) {
+        messageText.setText(title);
     }
 }

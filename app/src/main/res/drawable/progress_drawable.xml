@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@android:id/background">
+        <shape>
+            <!-- radius background of progressbar -->
+            <corners android:radius="10dip" />
+            <gradient
+                android:angle="270"
+                android:centerColor="#fff"
+                android:centerY="0.50"
+                android:endColor="#fff"
+                android:startColor="#fff" />
+        </shape>
+    </item>
+
+    <item android:id="@android:id/secondaryProgress">
+        <clip>
+            <shape>
+                <corners android:radius="5dip" />
+                <gradient
+                    android:angle="270"
+                    android:centerColor="#80ffb600"
+                    android:centerY="0.75"
+                    android:endColor="#a0ffcb00"
+                    android:startColor="#80ffd300" />
+            </shape>
+        </clip>
+    </item>
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <!-- radius of secundary progress -->
+                <corners android:radius="10dip" />
+                <gradient
+                    android:angle="270"
+                    android:centerColor="#3399ff"
+                    android:endColor="#3399ff"
+                    android:startColor="@android:color/holo_blue_dark"
+                    android:type="linear" />
+            </shape>
+        </clip>
+    </item>
+
+</layer-list>
